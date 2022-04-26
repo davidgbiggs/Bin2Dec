@@ -1,7 +1,7 @@
-import BinaryNum.testInvalid
+import BinaryNumber.testInvalid
 import scala.annotation.tailrec
 
-case class BinaryNum(private val numString: String) {
+case class BinaryNumber(private val numString: String) {
   testInvalid(numString) match {
     case Some(TooLong) => throw new IllegalArgumentException("Too Long")
     case Some(BadCharacter) => throw new IllegalArgumentException("Bad Character")
@@ -9,7 +9,7 @@ case class BinaryNum(private val numString: String) {
   }
 
   @tailrec
-  final def toDecimal(num: String = numString.reverse, total: Int = 0, place: Int = 1): Int = {
+  final def toDecimal(num: String = numString.reverse, total: Long = 0, place: Long = 1): Long = {
     if (num.nonEmpty) {
       num.head match {
         case '0' => toDecimal(num.tail, total, place*2)
@@ -21,7 +21,7 @@ case class BinaryNum(private val numString: String) {
   }
 }
 
-object BinaryNum {
+object BinaryNumber {
   private def testInvalid(num: String): Option[InvalidMessage] = {
     val invalidPattern = "[^01]".r
     val foundInvalidChar = invalidPattern.findFirstMatchIn(num) match {
@@ -31,7 +31,7 @@ object BinaryNum {
 
     if (foundInvalidChar) {
       Some(BadCharacter)
-    } else if (num.length > 8) {
+    } else if (num.length > 63) {
       Some(TooLong)
     } else {
       None
